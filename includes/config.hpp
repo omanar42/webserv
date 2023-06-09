@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 19:19:19 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/08 22:26:40 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/09 13:11:59 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,23 @@
 # include <sstream>
 # include <stdexcept>
 
-// class Location {
-// 	private:
-// 		std::string		_url;
-// 		std::string		_root;
-// 		std::string		_index;
-// 		std::string		_autoindex;
-// 		std::string		_upload_path;
-// 		std::string		_redirection;
-// 		std::string		_cgi_pass;
-// 		std::string		_cgi_extension;
-// 		std::vector<std::string>		_methods;
-// 	public:
-// 		Location();
-// 		~Location();
-// 		Location(const Location &src);
-// 		Location &operator=(const Location &src);
-// };
+class Location {
+	public:
+		std::string		_url;
+		std::string		_root;
+		std::string		_autoindex;
+		std::string		_upload_path;
+		std::string		_directory_listing;
+		std::string		_cgi_pass;
+		std::string		_cgi_extension;
+		std::vector<std::string>	_index;
+		std::vector<std::string>	_methods;
+
+		Location();
+		~Location();
+		Location(const Location &src);
+		Location &operator=(const Location &src);
+};
 
 class Config {
 	public:
@@ -46,7 +46,7 @@ class Config {
 		std::string		_port;
 		std::string		_max_body_size;
 		std::string		_error_page;
-		// std::vector<Location>	_locations;
+		std::vector<Location>	*_locations;
 	
 		Config();
 		~Config();

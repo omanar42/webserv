@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 19:19:39 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/08 22:28:58 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/09 13:46:16 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Config::Config() {
 	this->_port = "";
 	this->_max_body_size = "";
 	this->_error_page = "";
+	this->_locations = new std::vector<Location>;
 }
 
 Config::Config(const Config &src) {
@@ -34,6 +35,38 @@ Config &Config::operator=(const Config &src) {
 		this->_port = src._port;
 		this->_max_body_size = src._max_body_size;
 		this->_error_page = src._error_page;
+	}
+	return *this;
+}
+
+Location::Location() {
+	this->_url = "";
+	this->_root = "";
+	this->_autoindex = "";
+	this->_upload_path = "";
+	this->_directory_listing = "";
+	this->_cgi_pass = "";
+	this->_cgi_extension = "";
+}
+
+Location::Location(const Location &src) {
+	*this = src;
+}
+
+Location::~Location() {
+}
+
+Location &Location::operator=(const Location &src) {
+	if (this != &src) {
+		this->_url = src._url;
+		this->_root = src._root;
+		this->_autoindex = src._autoindex;
+		this->_upload_path = src._upload_path;
+		this->_directory_listing = src._directory_listing;
+		this->_cgi_pass = src._cgi_pass;
+		this->_cgi_extension = src._cgi_extension;
+		this->_index = src._index;
+		this->_methods = src._methods;
 	}
 	return *this;
 }
