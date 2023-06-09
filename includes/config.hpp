@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 19:19:19 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/09 13:11:59 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/09 19:04:17 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class Config {
 		std::string		_host;
 		std::string		_port;
 		std::string		_max_body_size;
-		std::string		_error_page;
+		std::map<int, std::string> errorPages;
 		std::vector<Location>	*_locations;
 	
 		Config();

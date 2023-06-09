@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 17:01:15 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/09 13:58:31 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/09 23:07:27 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ void Server::printServerConfig() {
 	std::cout << "  Host: " << this->config->_host << std::endl;
 	std::cout << "  Port: " << this->config->_port << std::endl;
 	std::cout << "  Max Body Size: " << this->config->_max_body_size << std::endl;
+
+	std::map<int, std::string>::iterator mit = this->config->errorPages.begin();
+	while (mit != this->config->errorPages.end()) {
+		std::cout << "  Error " << mit->first << " : " << mit->second << std::endl;
+		mit++;
+	}
 
 	std::vector<Location>::iterator it = this->config->_locations->begin();
 	while (it != this->config->_locations->end()) {
@@ -95,6 +101,26 @@ Location	ParseLocation(std::ifstream &configFile, std::istringstream &is) {
 	throw std::runtime_error("Error: Location block not closed");
 }
 
+void	ParseErrorPage(std::ifstream &configFile, Config *config) {
+	std::string line;
+
+	while (getline(configFile, line)) {
+		if (line.empty())
+			continue;
+		if (line == "    }")
+			return ;
+		
+		int key;
+		std::string value;
+		std::istringstream iss(line);
+		iss >> key;
+		if (!key)
+			continue;
+		iss >> value;
+		config->errorPages[key] = value;
+	}
+}
+
 void	ParseServer(std::ifstream &configFile, Config *config)
 {
 	std::string line;
@@ -107,25 +133,16 @@ void	ParseServer(std::ifstream &configFile, Config *config)
 		std::string directive;
 		iss >> directive;
 	
-		if (directive == "server_name") {
-			// parse server name until ;
-			std::string server_name;
-			while (iss >> server_name) {
-				if (server_name[server_name.length() - 1] == ';') {
-					server_name = server_name.substr(0, server_name.length() - 1);
-					config->_server_name = server_name;
-					break;
-				}
-				config->_server_name += server_name + " ";
-			}
-		}
-			// iss >> config->_server_name;
+		if (directive == "server_name")
+			iss >> config->_server_name;
 		else if (directive == "host")
 			iss >> config->_host;
 		else if (directive == "port")
 			iss >> config->_port;
 		else if (directive == "max_body_size")
 			iss >> config->_max_body_size;
+		else if (directive == "error_pages")
+			ParseErrorPage(configFile, config);
 		else if (directive == "location")
 			config->_locations->push_back(ParseLocation(configFile, iss));
 	}
