@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 14:26:21 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 16:16:35 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/10 18:19:21 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ bool	isNumber(const std::string& s) {
 	return !s.empty() && it == s.end();
 }
 
+void	parseValue(std::istringstream &iss, std::string &variable) {
+	std::string token;
+	iss >> token;
+	token.erase(std::remove(token.begin(), token.end(), ';'), token.end());
+	variable = token;
+}
+
 Location	ParseLocation(std::ifstream &configFile, std::istringstream &is) {
 	std::string line;
 	Location location;
@@ -27,34 +34,39 @@ Location	ParseLocation(std::ifstream &configFile, std::istringstream &is) {
 		if (line == "    }")
 			return location;
 		std::istringstream iss(line);
-		std::string keyword;
-		iss >> keyword;
-		if (keyword.empty() || keyword[0] == '#')
+		std::string directive;
+		iss >> directive;
+		if (directive.empty() || directive[0] == '#')
 			continue;
-		else if (keyword == "methods") {
+		else if (directive == "methods") {
 			std::string method;
-			while (iss >> method)
+			while (iss >> method) {
+				method.erase(std::remove(method.begin(), method.end(), ';'), method.end());
 				location._methods.push_back(method);
+			}
 		}
-		else if (keyword == "root")
-			iss >> location._root;
-		else if (keyword == "autoindex")
-			iss >> location._autoindex;
-		else if (keyword == "index") {
-			std::string index;
-			while (iss >> index)
-				location._index.push_back(index);
+		else if (directive == "redirect")
+			parseValue(iss, location._redirect);
+		else if (directive == "root")
+			parseValue(iss, location._root);
+		else if (directive == "upload_path")
+			parseValue(iss, location._upload_path);
+		else if (directive == "directory_listing") {
+			iss >> directive;
+			directive.erase(std::remove(directive.begin(), directive.end(), ';'), directive.end());
+			if (directive == "on")
+				location._directory_listing = true;
+			else if (directive == "off")
+				location._directory_listing = false;
+			else
+				throw std::runtime_error("Error: Unknown directory_listing directive: " + directive);
 		}
-		else if (keyword == "upload_path")
-			iss >> location._upload_path;
-		else if (keyword == "cgi_pass")
-			iss >> location._cgi_pass;
-		else if (keyword == "cgi_extension")
-			iss >> location._cgi_extension;
-		else if (keyword == "directory_listing")
-			iss >> location._directory_listing;
+		else if (directive == "cgi_pass")
+			parseValue(iss, location._cgi_pass);
+		else if (directive == "cgi_extension")
+			parseValue(iss, location._cgi_extension);
 		else
-			throw std::runtime_error("Error: Unknown location keyword: " + keyword);
+			throw std::runtime_error("Error: Unknown location directive: " + directive);
 	}
 	throw std::runtime_error("Error: Location block not closed");
 }
@@ -74,6 +86,7 @@ void	ParseErrorPage(std::ifstream &configFile, Config *config) {
 			if (isNumber(token))
 				errors.push_back(std::make_pair(atoi(token.c_str()), ""));
 			else {
+				token.erase(std::remove(token.begin(), token.end(), ';'), token.end());
 				std::vector<std::pair<int, std::string> >::iterator it = errors.begin();
 				for (; it != errors.end(); it++)
 					config->errorPages[it->first] = token;
@@ -91,25 +104,25 @@ Config*	ParseServer(std::ifstream &configFile) {
 		if (line == "}")
 			return config;
 		std::istringstream iss(line);
-		std::string keyword;
-		iss >> keyword;
+		std::string directive;
+		iss >> directive;
 
-		if (keyword.empty() || keyword[0] == '#')
+		if (directive.empty() || directive[0] == '#')
 			continue;
-		if (keyword == "server_name")
-			iss >> config->_server_name;
-		else if (keyword == "host")
-			iss >> config->_host;
-		else if (keyword == "port")
-			iss >> config->_port;
-		else if (keyword == "max_body_size")
-			iss >> config->_max_body_size;
-		else if (keyword == "error_pages")
+		if (directive == "server_name")
+			parseValue(iss, config->_server_name);
+		else if (directive == "host")
+			parseValue(iss, config->_host);
+		else if (directive == "port")
+			parseValue(iss, config->_port);
+		else if (directive == "max_body_size")
+			parseValue(iss, config->_max_body_size);
+		else if (directive == "error_pages")
 			ParseErrorPage(configFile, config);
-		else if (keyword == "location")
+		else if (directive == "location")
 			config->_locations->push_back(ParseLocation(configFile, iss));
 		else
-			throw std::runtime_error("Error: Unknown keyword: " + keyword);
+			throw std::runtime_error("Error: Unknown directive: " + directive);
 	}
 	throw std::runtime_error("Error: server block not closed");
 }
@@ -119,14 +132,14 @@ Config*	getNextConfig(std::ifstream &configFile) {
 
 	while (getline(configFile, line)) {
 		std::istringstream iss(line);
-		std::string keyword;
-		iss >> keyword;
-		if (keyword.empty() || keyword[0] == '#')
+		std::string directive;
+		iss >> directive;
+		if (directive.empty() || directive[0] == '#')
 			continue;
-		else if (keyword == "server")
+		else if (directive == "server")
 			return ParseServer(configFile);
 		else
-			throw std::runtime_error("Error: Unknown keyword: " + keyword);
+			throw std::runtime_error("Error: Unknown directive: " + directive);
 	}
 	return NULL;
 }

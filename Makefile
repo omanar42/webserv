@@ -15,7 +15,8 @@ RM		=	rm -f
 CC		=	c++
 FLAGS	=	-Wall -Wextra -Werror -Iincludes -std=c++98
 DEBUG	=	-g -fsanitize=address
-SRCS	=	main.cpp srcs/Server.cpp srcs/config/config.cpp srcs/config/configUtils.cpp 
+SRCS	=	main.cpp srcs/Server.cpp \
+			srcs/parsing/config.cpp srcs/parsing/utilities.cpp
 
 all: $(NAME)
 
@@ -33,6 +34,7 @@ clean:
 	@echo "\n\033[0;31m</ EVERYTHING HAS BEEN DELETED! >\033[0m\n"
 
 fclean: clean
+	@rm -rf $(NAME).dSYM
 
 re: fclean all
 

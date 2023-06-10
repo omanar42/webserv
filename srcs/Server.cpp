@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 14:23:17 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 14:25:16 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/10 18:02:44 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void Server::printServerConfig() {
 	while (it != this->config->_locations->end()) {
 		std::cout << "  Location: " << it->_url << " {" << std::endl;
 		std::cout << "      Root: " << it->_root << std::endl;
-		std::cout << "      Autoindex: " << it->_autoindex << std::endl;
 		std::cout << "      Upload Path: " << it->_upload_path << std::endl;
 		std::cout << "      Directory Listing: " << it->_directory_listing << std::endl;
 		std::cout << "      CGI Pass: " << it->_cgi_pass << std::endl;
@@ -44,13 +43,6 @@ void Server::printServerConfig() {
 		std::cout << "      Methods: ";
 		std::vector<std::string>::iterator it2 = it->_methods.begin();
 		while (it2 != it->_methods.end()) {
-			std::cout << *it2 << " ";
-			it2++;
-		}
-		std::cout << std::endl;
-		std::cout << "      Index: ";
-		it2 = it->_index.begin();
-		while (it2 != it->_index.end()) {
 			std::cout << *it2 << " ";
 			it2++;
 		}
