@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 14:23:17 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 18:02:44 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/10 18:47:13 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ Server::~Server() {
 }
 
 void Server::printServerConfig() {
+	std::cout << "--------------- Server ---------------" << std::endl;
     std::cout << "  Server Name: " << this->config->_server_name << std::endl;
 	std::cout << "  Host: " << this->config->_host << std::endl;
 	std::cout << "  Port: " << this->config->_port << std::endl;
@@ -49,4 +50,5 @@ void Server::printServerConfig() {
 		std::cout << std::endl << "  }" << std::endl;
 		it++;
 	}
+	std::cout << "--------------------------------------" << std::endl;
 }

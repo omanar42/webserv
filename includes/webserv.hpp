@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 17:05:44 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 14:28:24 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/10 18:54:18 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class Server {
 		void printServerConfig();
 };
 
+std::vector<Server *>	getServers(char *file);
 Server*	getNextServer(std::ifstream &configFile);
 Config*	getNextConfig(std::ifstream &configFile);
 

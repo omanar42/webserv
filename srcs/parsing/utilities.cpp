@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 14:26:21 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 18:37:17 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/10 18:54:12 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,4 +176,17 @@ Server*	getNextServer(std::ifstream &configFile) {
 		return NULL;
 	missing(config);
 	return new Server(config);
+}
+
+std::vector<Server *>	getServers(char *file) {
+	std::ifstream	configFile(file);
+	if (!configFile.is_open())
+		throw std::runtime_error("Error: Failed to open configuration file: " + std::string(file));
+
+	Server *server;
+	std::vector<Server *> servers;
+	while ((server = getNextServer(configFile)))
+		servers.push_back(server);
+	configFile.close();
+	return servers;
 }
