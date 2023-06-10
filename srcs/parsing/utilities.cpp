@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   configUtils.cpp                                    :+:      :+:    :+:   */
+/*   utilities.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 14:26:21 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 18:19:21 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/10 18:37:17 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,36 @@ Config*	getNextConfig(std::ifstream &configFile) {
 	return NULL;
 }
 
+void	missing(Config *config) {
+	if (config->_server_name.empty())
+		throw std::runtime_error("Error: Missing server_name directive");
+	if (config->_host.empty())
+		throw std::runtime_error("Error: Missing host directive");
+	if (config->_port.empty())
+		throw std::runtime_error("Error: Missing port directive");
+	if (config->_max_body_size.empty())
+		throw std::runtime_error("Error: Missing max_body_size directive");
+	std::vector<Location>::iterator it = config->_locations->begin();
+	for (; it != config->_locations->end(); it++) {
+		if (it->_url.empty())
+			throw std::runtime_error("Error: Missing location url directive");
+		if (it->_root.empty())
+			throw std::runtime_error("Error: Missing root directive");
+		if (it->_redirect.empty())
+			throw std::runtime_error("Error: Missing redirect directive");
+		if (it->_upload_path.empty())
+			throw std::runtime_error("Error: Missing upload_path directive");
+		if (it->_cgi_pass.empty() && it->_cgi_extension.empty())
+			throw std::runtime_error("Error: Missing cgi_pass or cgi_extension directive");
+		if (it->_methods.empty())
+			throw std::runtime_error("Error: Missing methods directive");
+	}
+}
+
 Server*	getNextServer(std::ifstream &configFile) {
 	Config *config = getNextConfig(configFile);
 	if (!config)
 		return NULL;
+	missing(config);
 	return new Server(config);
 }
