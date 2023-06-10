@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 19:19:19 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/09 19:04:17 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/10 14:22:07 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ class Location {
 		std::vector<std::string>	_methods;
 
 		Location();
-		~Location();
-		Location(const Location &src);
-		Location &operator=(const Location &src);
 };
 
 class Config {
@@ -50,8 +47,6 @@ class Config {
 	
 		Config();
 		~Config();
-		Config(const Config &src);
-		Config &operator=(const Config &src);
 };
 
 #endif
