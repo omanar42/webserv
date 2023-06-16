@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 14:23:17 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 18:47:13 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/16 16:36:58 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void Server::printServerConfig() {
 	std::cout << "  Port: " << this->config->_port << std::endl;
 	std::cout << "  Max Body Size: " << this->config->_max_body_size << std::endl;
 
-	std::map<int, std::string>::iterator mit = this->config->errorPages.begin();
-	while (mit != this->config->errorPages.end()) {
+	std::map<int, std::string>::iterator mit = this->config->_error_pages.begin();
+	while (mit != this->config->_error_pages.end()) {
 		std::cout << "  Error " << mit->first << " : " << mit->second << std::endl;
 		mit++;
 	}

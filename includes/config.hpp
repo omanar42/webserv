@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 19:19:19 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 17:58:40 by omanar           ###   ########.fr       */
+/*   Updated: 2023/06/16 16:35:42 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ class Location {
 
 class Config {
 	public:
+		int				_port;
+		int				_max_body_size;
 		std::string		_server_name;
 		std::string		_host;
-		std::string		_port;
-		std::string		_max_body_size;
-		std::map<int, std::string> errorPages;
+		std::map<int, std::string> _error_pages;
 		std::vector<Location>	*_locations;
 	
 		Config();
