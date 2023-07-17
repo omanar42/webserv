@@ -15,9 +15,13 @@ RM		=	rm -f
 CC		=	c++
 FLAGS	=	-Wall -Wextra -Werror -Iincludes -std=c++98
 DEBUG	=	-g -fsanitize=address
-SRCS	=	main.cpp srcs/Server.cpp \
-			srcs/parsing/config.cpp srcs/parsing/utilities.cpp
+# SRCS	=	main.cpp srcs/Server.cpp \
+# 			srcs/parsing/config.cpp srcs/parsing/utilities.cpp \
+# 			srcs/networking/ClientSocket.cpp srcs/networking/ServerSocket.cpp \
+# 			srcs/networking/webserv.cpp
 
+SRCS	=	srcs/networking/ClientSocket.cpp srcs/networking/ServerSocket.cpp \
+			srcs/networking/webserv.cpp srcs/networking/Request.cpp
 all: $(NAME)
 
 $(NAME): $(SRCS)
