@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ClientSocket.cpp                                   :+:      :+:    :+:   */
+/*   Client.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ClientSocket.hpp"
+#include "Client.hpp"
 
-ClientSocket::ClientSocket() {
+Client::Client() {
 	// Define address structure
 	_address.sin_family = AF_INET;
 	_address.sin_port = htons(_port);
@@ -26,48 +26,48 @@ ClientSocket::ClientSocket() {
 		throw std::runtime_error("Error: " + std::string(strerror(errno)));
 }
 
-ClientSocket::ClientSocket(int socket, struct sockaddr_in address) {
+Client::Client(int socket, struct sockaddr_in address) {
 	_socket = socket;
 	_address = address;
 }
 
-ClientSocket::~ClientSocket() {
+Client::~Client() {
 	close(_socket);
 }
 
-void ClientSocket::closeSocket() {
+void Client::closeSocket() {
 	close(_socket);
 }
 
-int ClientSocket::getSocket() const {
+int Client::getSocket() const {
 	return _socket;
 }
 
-int ClientSocket::getPort() const {
+int Client::getPort() const {
 	return _port;
 }
 
-std::string ClientSocket::getHost() const {
+std::string Client::getHost() const {
 	return _host;
 }
 
-void ClientSocket::setHost(std::string host) {
+void Client::setHost(std::string host) {
 	_host = host;
 }
 
-void ClientSocket::setPort(int port) {
+void Client::setPort(int port) {
 	_port = port;
 }
 
-void ClientSocket::setSocket(int socket) {
+void Client::setSocket(int socket) {
 	_socket = socket;
 }
 
-void ClientSocket::setAddress(struct sockaddr_in address) {
+void Client::setAddress(struct sockaddr_in address) {
 	_address = address;
 }
 
-std::string ClientSocket::receiveRequest() {
+std::string Client::receiveRequest() {
 	char buffer[1024];
 	int bytesReceived = recv(_socket, buffer, 1024, 0);
 	if (bytesReceived == -1)
@@ -75,7 +75,7 @@ std::string ClientSocket::receiveRequest() {
 	return std::string(buffer, bytesReceived);
 }
 
-void ClientSocket::sendResponse(std::string response) {
+void Client::sendResponse(std::string response) {
 	int bytesSent = send(_socket, response.c_str(), response.size(), 0);
 	if (bytesSent == -1)
 		throw std::runtime_error("Error: " + std::string(strerror(errno)));

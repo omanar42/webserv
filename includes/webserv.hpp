@@ -6,33 +6,33 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 17:05:44 by omanar            #+#    #+#             */
-/*   Updated: 2023/06/10 18:54:18 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/20 12:01:54 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WEBSERV_HPP
 # define WEBSERV_HPP
 
-# include <iostream>
-# include <string>
-# include <vector>
 # include <map>
+# include <vector>
+# include <string>
 # include <fstream>
 # include <sstream>
+# include <iostream>
+# include <fcntl.h>
+# include <errno.h>
+# include <unistd.h>
+# include <exception>
 # include <stdexcept>
-# include "config.hpp"
+# include <sys/time.h>
+# include <sys/types.h>
+# include <netinet/in.h>
+# include <sys/select.h>
+# include "Server.hpp"
+# include "Client.hpp"
 
-class Server {
-	private:
-		Config *config;
-	public:
-		Server(Config *config);
-		~Server();
-		void printServerConfig();
-};
+class Server;
 
-std::vector<Server *>	getServers(char *file);
-Server*	getNextServer(std::ifstream &configFile);
-Config*	getNextConfig(std::ifstream &configFile);
+std::vector<Server *>*	getServers(char *file);
 
 #endif

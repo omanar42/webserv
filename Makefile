@@ -15,13 +15,8 @@ RM		=	rm -f
 CC		=	c++
 FLAGS	=	-Wall -Wextra -Werror -Iincludes -std=c++98
 DEBUG	=	-g -fsanitize=address
-# SRCS	=	main.cpp srcs/Server.cpp \
-# 			srcs/parsing/config.cpp srcs/parsing/utilities.cpp \
-# 			srcs/networking/ClientSocket.cpp srcs/networking/ServerSocket.cpp \
-# 			srcs/networking/webserv.cpp
+SRCS	=	main.cpp srcs/Client.cpp srcs/Parsing.cpp srcs/Request.cpp srcs/Response.cpp srcs/Server.cpp
 
-SRCS	=	srcs/networking/ClientSocket.cpp srcs/networking/ServerSocket.cpp \
-			srcs/networking/webserv.cpp srcs/networking/Request.cpp
 all: $(NAME)
 
 $(NAME): $(SRCS)
@@ -31,11 +26,11 @@ $(NAME): $(SRCS)
 
 debug:
 	@$(CC) $(FLAGS) $(DEBUG) $(SRCS) -o $(NAME)
-	@echo "\033[1;31m   | YOU ARE IN DEBUG MODE!\033[0m\n"
+	@echo "\n\033[0;31m   | YOU ARE IN DEBUG MODE!\033[0m\n"
 
 clean:
 	@$(RM) $(NAME)
-	@echo "\n\033[0;31m</ EVERYTHING HAS BEEN DELETED! >\033[0m\n"
+	@echo "\n\033[1;31m</ EVERYTHING HAS BEEN DELETED! >\033[0m\n"
 
 fclean: clean
 	@rm -rf $(NAME).dSYM
