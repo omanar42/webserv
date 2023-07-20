@@ -6,21 +6,14 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:17:52 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/17 11:45:34 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/20 21:40:08 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REQUEST_HPP
 # define REQUEST_HPP
 
-# include <iostream>
-# include <string>
-# include <map>
-# include <vector>
-# include <sstream>
-# include <fstream>
-# include <sys/stat.h>
-# include <sys/types.h>
+# include "Webserv.hpp"
 
 class Request {
 	private:

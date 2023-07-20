@@ -6,25 +6,20 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 17:01:15 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/20 13:11:10 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/20 15:30:47 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "webserv.hpp"
+#include "Webserv.hpp"
 
 int	main(int ac, char **av)
 {
 	try {
 		if (ac != 2)
 			throw std::runtime_error("Usage: ./webserv [configuration file]");
-		std::vector<Server *> *servers = getServers(av[1]);
-		
-		std::vector<Server *>::iterator it = servers->begin();
-		while (it != servers->end()) {
-			std::cout << **it << std::endl;
-			delete *it++;
-		}
-		delete servers;
+		Webserv *webserv = new Webserv(av[1]);
+		webserv->run();
+		delete webserv;
 	}
 	catch(const std::exception& e) {
 		std::cerr << e.what() << std::endl;

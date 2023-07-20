@@ -74,7 +74,7 @@ void Server::setSocketOptions() {
 		throw std::runtime_error("Error: " + std::string(strerror(errno)));
 }
 
-void Server::createSocket() {
+void Server::run() {
 	// Define address structure
 	_address.sin_family = AF_INET;
 	_address.sin_port = htons(8080);

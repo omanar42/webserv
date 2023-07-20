@@ -6,17 +6,14 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:59:13 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/17 13:08:22 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/20 21:28:11 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RESPONSE_HPP
 # define RESPONSE_HPP
 
-# include <string>
-# include <vector>
-# include <sstream>
-# include <iostream>
+# include "Webserv.hpp"
 
 class Response {
 	private:

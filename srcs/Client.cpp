@@ -13,15 +13,12 @@
 #include "Client.hpp"
 
 Client::Client() {
-	// Define address structure
 	_address.sin_family = AF_INET;
 	_address.sin_port = htons(_port);
 	_address.sin_addr.s_addr = inet_addr(_host.c_str());
-	// Create socket
 	_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (_socket == -1)
 		throw std::runtime_error("Error: " + std::string(strerror(errno)));
-	// Connect socket
 	if (connect(_socket, (struct sockaddr *)&_address, sizeof(_address)) == -1)
 		throw std::runtime_error("Error: " + std::string(strerror(errno)));
 }
@@ -33,46 +30,38 @@ Client::Client(int socket, struct sockaddr_in address) {
 
 Client::~Client() {
 	close(_socket);
+	delete _request;
+	// delete _response;
 }
 
 void Client::closeSocket() {
 	close(_socket);
 }
 
-int Client::getSocket() const {
-	return _socket;
-}
+int Client::getSocket() const { return _socket; }
 
-int Client::getPort() const {
-	return _port;
-}
+int Client::getPort() const { return _port; }
 
-std::string Client::getHost() const {
-	return _host;
-}
+std::string Client::getHost() const { return _host; }
 
-void Client::setHost(std::string host) {
-	_host = host;
-}
+struct sockaddr_in Client::getAddress() const { return _address; }
 
-void Client::setPort(int port) {
-	_port = port;
-}
+Request *Client::getRequest() const { return _request; }
 
-void Client::setSocket(int socket) {
-	_socket = socket;
-}
+void Client::setHost(std::string host) { _host = host; }
 
-void Client::setAddress(struct sockaddr_in address) {
-	_address = address;
-}
+void Client::setPort(int port) { _port = port; }
 
-std::string Client::receiveRequest() {
-	char buffer[1024];
-	int bytesReceived = recv(_socket, buffer, 1024, 0);
+void Client::setSocket(int socket) { _socket = socket; }
+
+void Client::setAddress(struct sockaddr_in address) { _address = address; }
+
+void Client::receiveRequest() {
+	char buffer[BS];
+	int bytesReceived = recv(_socket, buffer, BS, 0);
 	if (bytesReceived == -1)
 		throw std::runtime_error("Error: " + std::string(strerror(errno)));
-	return std::string(buffer, bytesReceived);
+	_request = new Request(std::string(buffer, bytesReceived));
 }
 
 void Client::sendResponse(std::string response) {

@@ -6,14 +6,14 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 00:22:15 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/20 13:07:00 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/20 21:19:10 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include "webserv.hpp"
+# include "Webserv.hpp"
 
 class Client;
 
@@ -62,7 +62,7 @@ class Server {
 		void setErrorPages(std::map<int, std::string> *error_pages);
 		void setAddress(struct sockaddr_in address);
 		void setSocketOptions();
-		void createSocket();
+		void run();
 		Client acceptClient();
 };
 

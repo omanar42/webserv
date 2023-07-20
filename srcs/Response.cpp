@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:02:40 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/17 13:08:41 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/20 15:12:01 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,69 +16,37 @@ Response::Response() {}
 
 Response::~Response() {}
 
-std::string const &Response::getVersion() const {
-	return _version;
-}
+std::string const &Response::getVersion() const { return _version; }
 
-std::string const &Response::getStatusCode() const {
-	return _statusCode;
-}
+std::string const &Response::getStatusCode() const { return _statusCode; }
 
-std::string const &Response::getStatusMessage() const {
-	return _statusMessage;
-}
+std::string const &Response::getStatusMessage() const { return _statusMessage; }
 
-std::string const &Response::getDate() const {
-	return _date;
-}
+std::string const &Response::getDate() const { return _date; }
 
-std::string const &Response::getServer() const {
-	return _server;
-}
+std::string const &Response::getServer() const { return _server; }
 
-std::string const &Response::getContentType() const {
-	return _contentType;
-}
+std::string const &Response::getContentType() const { return _contentType; }
 
-std::string const &Response::getContentLength() const {
-	return _contentLength;
-}
+std::string const &Response::getContentLength() const { return _contentLength; }
 
-std::string const &Response::getBody() const {
-	return _body;
-}
+std::string const &Response::getBody() const { return _body; }
 
-void Response::setVersion(std::string const &version) {
-	_version = version;
-}
+void Response::setVersion(std::string const &version) { _version = version; }
 
-void Response::setStatusCode(std::string const &statusCode) {
-	_statusCode = statusCode;
-}
+void Response::setStatusCode(std::string const &statusCode) { _statusCode = statusCode; }
 
-void Response::setStatusMessage(std::string const &statusMessage) {
-	_statusMessage = statusMessage;
-}
+void Response::setStatusMessage(std::string const &statusMessage) { _statusMessage = statusMessage; }
 
-void Response::setDate(std::string const &date) {
-	_date = date;
-}
+void Response::setDate(std::string const &date) { _date = date; }
 
-void Response::setServer(std::string const &server) {
-	_server = server;
-}
+void Response::setServer(std::string const &server) { _server = server; }
 
-void Response::setContentType(std::string const &contentType) {
-	_contentType = contentType;
-}
+void Response::setContentType(std::string const &contentType) { _contentType = contentType; }
 
-void Response::setContentLength(std::string const &contentLength) {
-	_contentLength = contentLength;
-}
+void Response::setContentLength(std::string const &contentLength) { _contentLength = contentLength; }
 
-void Response::setBody(std::string const &body) {
-	_body = body;
-}
+void Response::setBody(std::string const &body) { _body = body; }
 
 std::string Response::toString() const {
 	std::string response;
