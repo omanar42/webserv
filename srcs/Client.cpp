@@ -26,11 +26,13 @@ Client::Client() {
 Client::Client(int socket, struct sockaddr_in address) {
 	_socket = socket;
 	_address = address;
+	this->receiveRequest();
 }
 
 Client::~Client() {
 	close(_socket);
 	delete _request;
+	std::cout << "Client deleted" << std::endl;
 	// delete _response;
 }
 

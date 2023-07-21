@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 23:59:30 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/20 21:25:13 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/21 19:09:36 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void Webserv::simulation(Server *server) {
 			std::cout << "\n   | Waiting for client...\n" << std::endl;
 			Client client = server->acceptClient();
 			std::cout << "Client connected" << std::endl;
-			client.receiveRequest();
 			client.getRequest()->display();
 			std::cout << "Request received\n" << std::endl;
 			client.sendResponse("HTTP/1.1 200 OK\nContent-Type: text/html\n\n<html><body><h1>Hello, World!</h1></body></html>");
@@ -49,4 +48,5 @@ void Webserv::run() {
 	Server *server = servers->front();
 	server->run();
 	simulation(server);
+	close(server->getSocket());
 }
