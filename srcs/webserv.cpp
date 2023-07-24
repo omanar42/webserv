@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 23:59:30 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/21 19:09:36 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/24 02:55:48 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void Webserv::displayInfo() {
 }
 
 void Webserv::simulation(Server *server) {
-	while (true) {
+	// while (true) {
 		try {
 			std::cout << "\n   | Waiting for client...\n" << std::endl;
 			Client client = server->acceptClient();
@@ -41,12 +41,16 @@ void Webserv::simulation(Server *server) {
 		} catch (std::exception &e) {
 			std::cout << e.what() << std::endl;
 		}
-	}
+	// }
 }
 
 void Webserv::run() {
-	Server *server = servers->front();
-	server->run();
-	simulation(server);
-	close(server->getSocket());
+	std::vector<Server *>::iterator it = servers->begin();
+	while (it != servers->end()) {
+		(*it)->run();
+		it++;
+	}
+		
+	simulation(servers->front());
+	// close(server->getSocket());
 }

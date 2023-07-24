@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:43:05 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/22 13:35:29 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/22 13:43:36 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ std::string Request::bodyParser(std::string const &request) {
 		throw std::runtime_error("bad request");
 	size_t start = pos + 4;
 	size_t end = request.size();
-	if (end == std::string::npos)
-		throw std::runtime_error("bad request");
 	return (request.substr(start, end - start));
 }
 

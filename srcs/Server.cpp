@@ -77,8 +77,8 @@ void Server::setSocketOptions() {
 void Server::run() {
 	// Define address structure
 	_address.sin_family = AF_INET;
-	_address.sin_port = htons(8080);
-	_address.sin_addr.s_addr = htonl(INADDR_ANY);
+	_address.sin_port = htons(_port);
+	_address.sin_addr.s_addr = inet_addr(_host.c_str());
 	_address_len = sizeof(_address);
 	// Create socket
 	_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -86,14 +86,14 @@ void Server::run() {
 		throw std::runtime_error("Error creating socket: " + std::string(strerror(errno)));
 	std::cout << "Server socket created" << std::endl;
 	// if (fcntl(_socket, F_SETFL, O_NONBLOCK) == -1)
-	// 	throw std::runtime_error("Error: fcntl: " + std::string(strerror(errno)));
+	// 	throw std::runtime_error("Error setting socket to non-blocking: " + std::string(strerror(errno)));
 	// std::cout << "Server socket set to non-blocking" << std::endl;
 	if (bind(_socket, (struct sockaddr *)&_address, _address_len) == -1)
 		throw std::runtime_error("Error binding socket: " + std::string(strerror(errno)));
 	std::cout << "Server socket binded" << std::endl;
 	if (listen(_socket, SOMAXCONN) == -1)
 		throw std::runtime_error("Error listening socket: " + std::string(strerror(errno)));
-	std::cout << "Server running. Listening on port " << "8080" << "..." << std::endl;
+	std::cout << "Server running. Listening on port " << _port << "..." << std::endl;
 }
 
 Client Server::acceptClient() {
