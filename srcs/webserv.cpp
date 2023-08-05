@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: omanar <omanar@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 23:59:30 by omanar            #+#    #+#             */
-/*   Updated: 2023/08/05 22:29:13 by omanar           ###   ########.fr       */
+/*   Updated: 2023/08/05 23:24:37 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,15 @@ void Webserv::simulation() {
 		if (res == -1)
 			throw std::runtime_error("Poll failed");
 		else if (res > 0) {
-			// std::vector<struct pollfd>::iterator it = pollfds.begin();
 			for (size_t i = 0; i < pollfds.size(); ++i) {
 				// std::cout << "Dkhaaaaal ============ " << std::endl;
 				if (pollfds[i].revents & POLLIN) {
 					std::vector<Server *>::iterator it2 = servers->begin();
 					while (it2 != servers->end()) {
 						if ((*it2)->getSocket() == pollfds[i].fd) {
-							int clientSocket = (*it2)->acceptConnection();
+							struct sockaddr_in clientAddress;
+							socklen_t clientAddressLen = sizeof(clientAddress);
+							int clientSocket = accept((*it2)->getSocket(), (struct sockaddr *)&clientAddress, &clientAddressLen); 
 							if (clientSocket == -1)
 								throw std::runtime_error("Accept failed: " + std::string(strerror(errno)));
 							struct pollfd pollfd;
@@ -57,46 +58,28 @@ void Webserv::simulation() {
 						it2++;
 					}
 					if (it2 == servers->end()) {
-						// int clientSocket = it->fd;
-
-						// char buffer[1024];
-						// memset(buffer, 0, 1024);
-						// int bytesRead = recv(clientSocket, buffer, 1024, 0);
-						// if (bytesRead == -1)
-						// 	throw std::runtime_error("Recv failed " + std::string(strerror(errno)));
-						// else if (bytesRead == 0) {
-						// 	std::cout << "Client disconnected" << std::endl;
-						// 	close(clientSocket);
-						// 	it = pollfds.erase(it);
-						// 	continue ;
-						// } else {
-						// 	std::cout << "Received request: " << std::endl << buffer << std::endl;
-						// 	it->events = POLLOUT;
-						// }
-
 						char buffer[1024];
-						ssize_t bytesRead = recv(pollfds[i].fd, buffer, sizeof(buffer), 0);
-						if (bytesRead <= 0) {
+						memset(buffer, 0, 1024);
+						int bytesRead = recv(pollfds[i].fd, buffer, sizeof(buffer), 0);
+						if (bytesRead < 0) {
+							std::cout << "Client disconnected" << std::endl;
 							close(pollfds[i].fd);
 							pollfds.erase(pollfds.begin() + i);
 						} else {
-							std::string response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Hello, World!</h1></body></html>";
-							send(pollfds[i].fd, response.c_str(), response.size(), 0);
-							close(pollfds[i].fd);
+							std::cout << "Received request: " << std::endl << buffer << std::endl;
+							pollfds[i].events = POLLOUT;
 						}
 					}
 				}
-				// if (it->revents & POLLOUT) {
-				// 	int clientSocket = it->fd;
-				// 	std::string response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Hello, World!</h1></body></html>";
-				// 	int bytesSent = send(clientSocket, response.c_str(), response.size(), 0);
-				// 	if (bytesSent == -1)
-				// 		throw std::runtime_error("Send Failed: " + std::string(strerror(errno)));
-				// 	else
-				// 		std::cout << "Response sent" << std::endl;
-				// 	close(clientSocket);
-				// }
-				// it++;
+				else if (pollfds[i].revents & POLLOUT) {
+					std::string response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 48\r\n\r\n<html><body><h1>Hello, World!</h1></body></html>";
+					int bytesSent = send(pollfds[i].fd, response.c_str(), response.size(), 0);
+					if (bytesSent < 0)
+						std::cout << "Error sending response" << std::endl;
+					else
+						std::cout << "Response sent" << std::endl;
+					close(pollfds[i].fd);
+				}
 			}
 		}
 	}
