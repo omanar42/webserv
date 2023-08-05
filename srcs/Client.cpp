@@ -26,12 +26,11 @@ Client::Client() {
 Client::Client(int socket, struct sockaddr_in address) {
 	_socket = socket;
 	_address = address;
-	this->receiveRequest();
 }
 
 Client::~Client() {
-	close(_socket);
-	delete _request;
+	// close(_socket);
+	// delete _request;
 	std::cout << "Client deleted" << std::endl;
 	// delete _response;
 }
@@ -62,7 +61,7 @@ void Client::receiveRequest() {
 	char buffer[BS];
 	int bytesReceived = recv(_socket, buffer, BS, 0);
 	if (bytesReceived == -1)
-		throw std::runtime_error("Error: " + std::string(strerror(errno)));
+		throw std::runtime_error("Error recv: " + std::string(strerror(errno)));
 	_request = new Request(std::string(buffer, bytesReceived));
 }
 

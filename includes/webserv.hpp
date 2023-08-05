@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 17:05:44 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/20 21:18:56 by omanar           ###   ########.fr       */
+/*   Updated: 2023/07/26 03:41:12 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fstream>
 # include <sstream>
 # include <iostream>
+# include <poll.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <unistd.h>
@@ -39,11 +40,12 @@ class Server;
 class Webserv {
 	private:
 		std::vector<Server *>* servers;
+		std::vector<struct pollfd> pollfds;
 	public:
 		Webserv(char *ConfigFile);
 		~Webserv();
 		void run();
-		void simulation(Server *server);
+		void simulation();
 		void displayInfo();
 };
 

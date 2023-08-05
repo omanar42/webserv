@@ -6,7 +6,7 @@
 /*   By: omanar <omanar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 00:22:15 by omanar            #+#    #+#             */
-/*   Updated: 2023/07/20 21:19:10 by omanar           ###   ########.fr       */
+/*   Updated: 2023/08/05 22:24:20 by omanar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Server {
 		std::string	_server_name;
 		std::vector<Location>	*_locations;
 		std::map<int, std::string>	*_error_pages;
+		std::vector<Client>	_clients;
 		struct sockaddr_in	_address;
 		socklen_t	_address_len;
 	public:
@@ -63,7 +64,7 @@ class Server {
 		void setAddress(struct sockaddr_in address);
 		void setSocketOptions();
 		void run();
-		Client acceptClient();
+		int acceptConnection();
 };
 
 std::ostream &operator<<(std::ostream &out, const Server &server);

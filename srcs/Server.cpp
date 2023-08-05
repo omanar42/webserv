@@ -71,7 +71,7 @@ void Server::setSocketOptions() {
 	int opt = 1;
 
 	if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)) == -1)
-		throw std::runtime_error("Error: " + std::string(strerror(errno)));
+		throw std::runtime_error("Error setting socket options: " + std::string(strerror(errno)));
 }
 
 void Server::run() {
@@ -85,9 +85,9 @@ void Server::run() {
 	if (_socket == -1)
 		throw std::runtime_error("Error creating socket: " + std::string(strerror(errno)));
 	std::cout << "Server socket created" << std::endl;
-	// if (fcntl(_socket, F_SETFL, O_NONBLOCK) == -1)
-	// 	throw std::runtime_error("Error setting socket to non-blocking: " + std::string(strerror(errno)));
-	// std::cout << "Server socket set to non-blocking" << std::endl;
+	if (fcntl(_socket, F_SETFL, O_NONBLOCK) == -1)
+		throw std::runtime_error("Error setting socket to non-blocking: " + std::string(strerror(errno)));
+	std::cout << "Server socket set to non-blocking" << std::endl;
 	if (bind(_socket, (struct sockaddr *)&_address, _address_len) == -1)
 		throw std::runtime_error("Error binding socket: " + std::string(strerror(errno)));
 	std::cout << "Server socket binded" << std::endl;
@@ -96,7 +96,7 @@ void Server::run() {
 	std::cout << "Server running. Listening on port " << _port << "..." << std::endl;
 }
 
-Client Server::acceptClient() {
+int Server::acceptConnection() {
 	int clientSocket;
 	struct sockaddr_in clientAddress;
 	socklen_t clientAddressLen = sizeof(clientAddress);
@@ -104,8 +104,18 @@ Client Server::acceptClient() {
 	clientSocket = accept(_socket, (struct sockaddr *)&clientAddress, &clientAddressLen);
 	if (clientSocket == -1)
 		throw std::runtime_error("Error accepting client: " + std::string(strerror(errno)));
+	if (fcntl(_socket, F_SETFL, O_NONBLOCK) == -1)
+		throw std::runtime_error("Error setting socket to non-blocking: " + std::string(strerror(errno)));
+	std::cout << "Client socket set to non-blocking" << std::endl;
 	Client client(clientSocket, _address);
-	return client;
+	_clients.push_back(client);
+
+	std::cout << "Client connected" << std::endl;
+	// client.getRequest()->display();
+	// std::cout << "Request received\n" << std::endl;
+	// client.sendResponse("HTTP/1.1 200 OK\nContent-Type: text/html\n\n<html><body><h1>Hello, World!</h1></body></html>");
+
+	return clientSocket;
 }
 
 std::ostream &operator<<(std::ostream &out, const Server &server) {
